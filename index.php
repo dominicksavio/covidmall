@@ -1,12 +1,17 @@
 <?php
-// Initialize the session
-session_start();
- 
+
 // Check if the user is already logged in, if yes then redirect him to welcome page
-if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
-  header("location: welcome.php");
+
+if((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true)){
+	if (strpos($_SESSION['privilage'], 'request') !== false)
+		header("location: verifymsg.php");
+    if(strcmp($_SESSION['privilage'],'superadmin')==0)
+        header("location: verify.php");
+    if(strcmp($_SESSION['privilage'],'admin')==0)
+        header("location: welcome.php");
   exit;
 }
+
  
 // Include config file
 require_once "config.php";
@@ -35,7 +40,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Validate credentials
     if(empty($username_err) && empty($password_err)){
         // Prepare a select statement
-        $sql = "SELECT id, username, password FROM users WHERE username = ?";
+        $sql = "SELECT id, username, password, privilage FROM users WHERE username = ?";
         
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
@@ -52,7 +57,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 // Check if username exists, if yes then verify password
                 if(mysqli_stmt_num_rows($stmt) == 1){                    
                     // Bind result variables
-                    mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password);
+                    mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password, $privilage);
                     if(mysqli_stmt_fetch($stmt)){
                         if(password_verify($password, $hashed_password)){
                             // Password is correct, so start a new session
@@ -62,9 +67,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             $_SESSION["loggedin"] = true;
                             $_SESSION["id"] = $id;
                             $_SESSION["username"] = $username;                            
-                            
+                            $_SESSION["privilage"] = $privilage;
                             // Redirect user to welcome page
-                            header("location: welcome.php");
+                            if (strpos($_SESSION['privilage'], 'request') !== false)
+								header("location: verifymsg.php");
+                            if(strcmp($_SESSION['privilage'],'superadmin')==0)
+                                header("location: verify.php");
+                            if(strcmp($_SESSION['privilage'],'admin')==0)
+                                header("location: welcome.php");
                         } else{
                             // Display an error message if password is not valid
                             $password_err = "The password you entered was not valid.";

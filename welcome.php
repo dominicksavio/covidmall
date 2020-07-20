@@ -29,7 +29,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     </p>
     
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" style="margin: auto;width: 50%;padding: 10px;">
-                    Number of buildings:<input type="number" name="numbuid">
+                    Number of new buildings:<input type="number" name="numbuid">
                 
             <input type="submit" name="submit" value="create building">
         </form>
@@ -58,7 +58,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     
     
 
-        $sql = "INSERT INTO building (uid,admin)
+        $sql = "INSERT INTO building (uid,admin,buildingname)
         VALUES ";
         for($i=1;$i<=$_POST['numbuid'];$i++)
             if($i!=$_POST['numbuid'])

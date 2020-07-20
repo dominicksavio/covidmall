@@ -5,11 +5,11 @@
 	VALUES ";
 	for($i=1;$i<=$_POST['noofroom'];$i++)
 		if($i!=$_POST['noofroom'])
-		{$sql.="('".$i."', '".$_POST['floorno']."', '".$_POST['buid']."', '".$_POST['capacity'.$i.'']."'),";
+		{$sql.="( '".$_POST['floorno']."', '".$_POST['buid']."', '".$_POST['capacity'.$i.'']."'),";
 		$cap+=$_POST['capacity'.$i.''];
 		}
 		else{
-		$sql.="('".$i."', '".$_POST['floorno']."', '".$_POST['buid']."', '".$_POST['capacity'.$i.'']."')";
+		$sql.="( '".$_POST['floorno']."', '".$_POST['buid']."', '".$_POST['capacity'.$i.'']."')";
 		$cap+=$_POST['capacity'.$i.''];
 		}
 	if($_POST['capacityoffloor']>=$cap)
