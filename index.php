@@ -9,7 +9,6 @@ if((isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true)){
         header("location: verify.php");
     if(strcmp($_SESSION['privilage'],'admin')==0)
         header("location: welcome.php");
-  exit;
 }
 
  
@@ -75,6 +74,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                 header("location: verify.php");
                             if(strcmp($_SESSION['privilage'],'admin')==0)
                                 header("location: welcome.php");
+                            if(strcmp($_SESSION['privilage'],'viewer')==0)
+                                header("location: view.php");
                         } else{
                             // Display an error message if password is not valid
                             $password_err = "The password you entered was not valid.";

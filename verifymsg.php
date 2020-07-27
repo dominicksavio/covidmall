@@ -1,0 +1,1 @@
+<h2>You have not been verified by the admin</h2>

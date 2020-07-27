@@ -29,7 +29,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     </p>
     
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" style="margin: auto;width: 50%;padding: 10px;">
-                    Number of new buildings:<input type="number" name="numbuid">
+                    Building Name: <input type="text" name="buidname" required>
                 
             <input type="submit" name="submit" value="create building">
         </form>
@@ -37,20 +37,39 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <?php
     include 'comm.php';
     
-    $sql = "SELECT uid FROM building where admin='".$_SESSION['username']."'";
+    $sql = "SELECT * FROM building where user='".$_SESSION['username']."'";
     $result = $conn->query($sql);
-    
-    if ($result->num_rows > 0) {
-      // output data of each row
-    echo "<table border=1>
-<tr><th>building number</th><th>edit building</th></tr>
-    ";
-      while($row = $result->fetch_assoc()) {
-        echo "<tr><td>" . $row["uid"]. " </td><td><form action='access.php' method='POST'><input type='submit' value='edit'><input type='text' name='buid' hidden value='".$row['uid']."'></form></td></tr>";
-      }
-      echo "</table>";
-    } else {
-      echo "0 buildings";
+    if($result!=null){
+        if ($result->num_rows > 0) {
+          // output data of each row
+        echo "<table border=1>
+                <tr>
+                    <th>building number</th>
+                    <th>building name</th>
+                    <th>edit building</th>
+                    <th>view building</th>
+                </tr>
+        ";
+          while($row = $result->fetch_assoc()) {
+            echo "<tr>
+                    <td>" . $row["uid"]. " </td>
+                    <td>" . $row["buildingname"]. " </td>
+                    <td>
+                        <form action='access.php' method='POST'>
+                            <input type='submit' value='edit'>
+                            <input type='text' name='buid' hidden value='".$row['uid']."'>
+                        </form>
+                    </td>
+                    <td>
+                        <form action='view.php' method='POST'>
+                            <input type='submit' value='view'>
+                            <input type='text' name='buid' hidden value='".$row['uid']."'>
+                        </form>
+                    </td>
+                </tr>";
+          }
+          echo "</table>";
+        } 
     }
 
 
@@ -58,16 +77,10 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     
     
 
-        $sql = "INSERT INTO building (uid,admin,buildingname)
-        VALUES ";
-        for($i=1;$i<=$_POST['numbuid'];$i++)
-            if($i!=$_POST['numbuid'])
-            {$sql.="('".$i."', '".$_SESSION['username']."'),";
+        $sql = "INSERT INTO building (user,buildingname)
+        VALUES ('".$_SESSION['username']."','".$_POST['buidname']."')";
+        
             
-            }
-            else{
-            $sql.="('".$i."', '".$_SESSION['username']."')";
-            }
         if ($conn->query($sql) === TRUE) {
           echo "<br>New buildings created successfully";
         } else {

@@ -43,7 +43,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     } else {
                         $pnum_err = 'Please use numbers';
                     }
-                    $priv=$_POST['privilage'];
                 }
             } else{
                 echo "Oops! Something went wrong. Please try again later.";
@@ -77,7 +76,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty($username_err) && empty($password_err) && empty($confirm_password_err)){
         
         // Prepare an insert statement
-        $sql = "INSERT INTO users (username, password, pnum, name, privilage) VALUES ('".$username."','".password_hash($password, PASSWORD_DEFAULT)."','".$pnum."','".$name."','".$priv." request')";
+        $sql = "INSERT INTO users (username, password, pnum, name, privilage) VALUES ('".$username."','".password_hash($password, PASSWORD_DEFAULT)."','".$pnum."','".$name."','superadmin')";
          
         if ($conn->query($sql) === TRUE) {
           header("location: index.php");
@@ -109,34 +108,33 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <div class="form-group   <?php echo (!empty($name_err)) ? 'has-error' : ''; ?>">
                 <label>Name</label>
-                <input type="text" name="name" class="form-control" value="<?php echo $name; ?>" required>
+                <input type="text" name="name" class="form-control" value="<?php echo $name; ?>">
                 <span class="help-block"><?php echo $name_err; ?></span>
             </div> 
             <div class="form-group   <?php echo (!empty($pnum_err)) ? 'has-error' : ''; ?>">
                 <label>Phone number</label>
-                <input type="text" name="pnum" class="form-control" value="<?php echo $pnum; ?>" required>
+                <input type="text" name="pnum" class="form-control" value="<?php echo $pnum; ?>">
                 <span class="help-block"><?php echo $pnum_err; ?></span>
             </div> 
             <div class="form-group">
                 <label for="privilage">User Privilage:</label>
-                  <select class="form-control" id="privilage" name="privilage">
-                    <option value="admin">Admin</option>
-                    <option value="viewer">Viewer</option>
+                  <select disabled class="form-control" id="privilage" name="privilage">
+                    <option value="superadmin">SuperAdmin</option>
                   </select>
             </div>
             <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
                 <label>Username</label>
-                <input type="text" name="username" class="form-control" value="<?php echo $username; ?>" required>
+                <input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
                 <span class="help-block"><?php echo $username_err; ?></span>
             </div>    
             <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
                 <label>Password</label>
-                <input type="password" name="password" class="form-control" value="<?php echo $password; ?>" required>
+                <input type="password" name="password" class="form-control" value="<?php echo $password; ?>">
                 <span class="help-block"><?php echo $password_err; ?></span>
             </div>
             <div class="form-group <?php echo (!empty($confirm_password_err)) ? 'has-error' : ''; ?>">
                 <label>Confirm Password</label>
-                <input type="password" name="confirm_password" class="form-control" value="<?php echo $confirm_password; ?>" required>
+                <input type="password" name="confirm_password" class="form-control" value="<?php echo $confirm_password; ?>">
                 <span class="help-block"><?php echo $confirm_password_err; ?></span>
             </div>
             <div class="form-group">
