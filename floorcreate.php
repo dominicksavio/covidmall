@@ -35,7 +35,7 @@
 			<input type="text" name="noofroom" hidden value="'.$_POST['noofroom'].'">
 			<input type="number" name="capacityoffloor" hidden value="'.$_POST['capacity'].'">
 			<input type="text" name="buid" value="'.$_POST['buid'].'" hidden>
-			<input type="submit" name="submit">
+			<input type="submit" name="submit" value="create room">
 		</form>';
 		echo'<form>
 			<input type="button" value="Return to previous page" onClick="javascript:history.go(-1)" />

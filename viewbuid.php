@@ -45,6 +45,11 @@ include 'comm.php';
             </script>
           ";
         }
+        
+    echo'<form>
+      <input type="button" value="Return to previous page" onClick="javascript:history.go(-1)" />
+    </form>';
+        echo "<a href='logout.php'>Logout</a>";
     
   //       $svgheight=500;
   //       $svgwidth=400;

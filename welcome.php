@@ -64,6 +64,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                         <form action='viewbuid.php' method='POST'>
                             <input type='submit' value='view'>
                             <input type='text' name='buid' hidden value='".$row['uid']."'>
+                            <input type='text' name='name' hidden value='".$row['buildingname']."'>
                         </form>
                     </td>
                 </tr>";

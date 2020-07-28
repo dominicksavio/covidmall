@@ -29,13 +29,36 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     </p>
     
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" style="margin: auto;width: 50%;padding: 10px;">
-                    Building Name: <input type="text" name="buidname" required>
+                     
                 
-            <input type="submit" name="submit" value="view building request">
+                    <?php 
+                        include 'comm.php';
+                        $sql = "SELECT DISTINCT buildingname FROM building WHERE buildingname NOT LIKE '%request'  AND buildingname NOT IN (SELECT buildingname from building where user LIKE '".$_SESSION['username']."')";
+                        $result = $conn->query($sql);
+                        echo"
+                <label for=\"buidname\" >Building Name:</label>
+                                  <select class=\"form-control\" id=\"privilage\" name=\"buidname\" required>
+                        ";
+                        if($result!=null){
+
+                            if ($result->num_rows > 0) {
+
+                                while($row = $result->fetch_assoc()) {
+                                    echo"<option value='".$row['buildingname']."'>".$row['buildingname']."</option>";
+                                    
+                                }
+                            }
+                            else {
+                              echo "Error: " . $sql . "<br>" . $conn->error;
+                            }
+                        }
+                     ?>
+                  </select>
+            <input type="submit" name="submit" value="request for view building">
         </form>
     
     <?php
-    include 'comm.php';
+    
     
     $sql = "SELECT * FROM building where user='".$_SESSION['username']."'";
     $result = $conn->query($sql);
@@ -88,6 +111,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             }
         }
     }
+
+                     
 ?>
 </body>
 </html>
