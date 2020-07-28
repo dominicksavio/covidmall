@@ -38,6 +38,7 @@ else {
   echo "0 results";
   header("location:index.php");
 }
+echo "<a href='welcomeadmin.php'>Welcome</a><br>";
 echo "<a href='logout.php'>Logout</a>";
 mysqli_close($conn);
  ?>

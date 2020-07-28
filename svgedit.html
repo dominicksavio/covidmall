@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<style type="text/css">
+	.static {
+      cursor: not-allowed;
+    }
+    .draggable {
+      cursor: move;
+    }
+	</style>
+</head>
+<body>
+	<button onclick="createRoom()">Create Room</button>
+	<svg xmlns="http://www.w3.org/2000/svg"
+         viewBox="0 0 30 20"
+         onload="makeDraggable(evt)"
+         id="mySVG">
+	  <rect x="0" y="0" width="30" height="20" fill="#fafafa"/>
+      <!-- <rect class="draggable" x="4" y="5" width="8" height="10" fill="#007bff"/>
+      <rect id="blue" class="draggable" x="4" y="5" width="8" height="10" fill="#007bff"/>
+      <rect class="static" x="18" y="5" width="8" height="10"   fill="#888"/>
+ -->
+    </svg>
+
+<script type="text/javascript">
+
+    function getMousePosition(evt) {
+      var CTM = svg.getScreenCTM();
+      return {
+        x: (evt.clientX - CTM.e) / CTM.a,
+        y: (evt.clientY - CTM.f) / CTM.d
+      };
+    }
+
+    function coloring(){
+
+      var x="rgb(";
+      x=x.concat(Math.floor(Math.random()*255).toString(),",")
+      x=x.concat(Math.floor(Math.random()*255).toString(),",")
+      x=x.concat(Math.floor(Math.random()*255).toString(),")")
+      return x;
+    }
+
+function createRoom()
+{
+	var svgNS = "http://www.w3.org/2000/svg";  
+	var col=coloring();
+    var myCircle = document.createElementNS(svgNS,"rect"); //to create a circle. for rectangle use "rectangle"
+    myCircle.setAttributeNS(null,"id","rect".concat(col));
+    myCircle.setAttributeNS(null,"x",10);
+    myCircle.setAttributeNS(null,"class","draggable");
+    myCircle.setAttributeNS(null,"y",10);
+    myCircle.setAttributeNS(null,"width",10);
+    myCircle.setAttributeNS(null,"height",10);
+    myCircle.setAttributeNS(null,"fill",col);
+    // myCircle.setAttributeNS(null,"stroke","none");
+
+    document.getElementById("mySVG").appendChild(myCircle);
+}     
+    function makeDraggable(evt) {
+
+
+      var svg = evt.target;
+      svg.addEventListener('mousedown', startDrag);
+      svg.addEventListener('mousemove', drag);
+      svg.addEventListener('mouseup', endDrag);
+      svg.addEventListener('mouseleave', endDrag);
+
+    function getMousePosition(evt) {
+      var CTM = svg.getScreenCTM();
+      return {
+        x: (evt.clientX - CTM.e) / CTM.a,
+        y: (evt.clientY - CTM.f) / CTM.d
+      };
+    }
+
+
+
+
+
+    var selectedElement, offset;
+    function startDrag(evt) {
+      if (evt.target.classList.contains('draggable')) {
+        selectedElement = evt.target;
+        offset = getMousePosition(evt);
+        offset.x -= parseFloat(selectedElement.getAttributeNS(null, "x"));
+        offset.y -= parseFloat(selectedElement.getAttributeNS(null, "y"));
+      }
+    }
+
+
+    function drag(evt) {
+      if (selectedElement) {
+        evt.preventDefault();
+        var coord = getMousePosition(evt);
+        selectedElement.setAttributeNS(null, "x", coord.x - offset.x);
+        selectedElement.setAttributeNS(null, "y", coord.y - offset.y);
+      }
+    }
+
+
+    function endDrag(evt) {
+      selectedElement = null;
+    }
+
+
+    }
+
+
+
+
+
+
+</script>
+</body>
+</html>
